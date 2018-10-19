@@ -1,0 +1,42 @@
+﻿@model WebApplication4.Models.Comments
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Comments</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.fourms.title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fourms.title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.commenttext)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.commenttext)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.uname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.uname)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CommentsID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

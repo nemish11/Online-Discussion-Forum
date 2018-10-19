@@ -1,0 +1,82 @@
+﻿@model WebApplication4.Models.Fourms
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Fourms</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <h4>User : </h4>
+        </dt>
+
+        <dd>
+            <h4> @Html.DisplayFor(model => model.users.name) </h4>
+        </dd>
+
+        <dt>
+            <h4>Fourm Title : </h4>
+        </dt>
+
+        <dd>
+            <h4> @Html.DisplayFor(model => model.title) </h4>
+        </dd>
+
+        <dt>
+           <h4>Fourm Text : </h4>
+        </dt>
+
+        <dd>
+            <h4> @Html.DisplayFor(model => model.text) </h4>
+        </dd>
+
+    </dl>
+    @if (Session["user"] != null && Session["uname"].ToString().Equals(Model.users.uname.ToString()))
+    {
+        @Html.ActionLink("Edit Fourm Text", "Edit", new { id = Model.FourmsID })
+    }
+    <hr />
+    <h2>All Comments: </h2><hr/>
+    @if (ViewData["comments"] != null)
+    {
+        foreach (var comments in ViewData["comments"] as IList<WebApplication4.Models.Comments>)
+        {
+            if (comments.fourms.FourmsID.Equals(int.Parse(Session["FourmsID"].ToString())))
+            {
+                <hr/>
+                <div>
+                    <h3>user: @comments.uname</h3>
+                </div>
+                <div>
+                    <h4>comment: @comments.commenttext</h4>
+                </div>
+                <hr/>
+                if (Session["uname"] != null && comments.uname.Equals(Session["uname"].ToString()))
+                {
+                    <div>
+                        <a href="/Comments/Edit/@comments.CommentsID">Edit</a>
+                        <a href="/Comments/Delete/@comments.CommentsID">Delete </a>
+                    </div>
+                }
+            }
+        }
+    }
+    @using (Html.BeginForm("create", "Comments", FormMethod.Post))
+    {
+        if (Session["user"] != null)
+        {
+            <div>
+                enter your comments : @Html.TextArea("commenttext")
+
+                <input id="Submit" type="submit" value="Post" />
+            </div>
+        }
+    }
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
