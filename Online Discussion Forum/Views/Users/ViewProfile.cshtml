@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "ViewProfile";
+}
+
+<h1>User's Profile</h1>
+@if (ViewData["puser"] != null)
+{
+    <h3>UserName: @Html.Label(ViewData["puser"].ToString())</h3>
+}
+
+<hr />
+<hr />
+<h1>User's Fourms: </h1><hr />
+@if (ViewData["pfourms"] != null)
+{
+    foreach (var fourm in ViewData["pfourms"] as IList<WebApplication4.Models.Fourms>)
+    {
+        <hr />
+        <div>
+            <h3>Forum Title: @fourm.title</h3>
+        </div>
+        <div>
+            <h3>Forum Text: @fourm.text</h3>
+        </div>
+        <div>
+            <h4>Creation Time : @fourm.datetime</h4>
+        </div>
+        <hr />
+        if (Session["uname"] != null && fourm.users.uname.Equals(Session["uname"].ToString()))
+        {
+            <div>
+                <a href="/fourms/Edit/@fourm.FourmsID">Edit</a>
+                <a href="/fourms/Delete/@fourm.FourmsID">Delete </a>
+            </div>
+        }
+    }
+}
+
+
+<hr />
+<hr />
+
+<h1>User's Comments: </h1><hr />
+@if (ViewData["pcomments"] != null)
+{
+    foreach (var comments in ViewData["pcomments"] as IList<WebApplication4.Models.Comments>)
+    {
+        <hr />
+        <div>
+            <h3>Forum: @comments.fourms.title</h3>
+        </div>
+        <div>
+            <h3>comment: @comments.commenttext</h3>
+        </div>
+        <div>
+            <h4>time : @comments.datetime</h4>
+        </div>
+        <hr />
+        if (Session["uname"] != null && comments.uname.Equals(Session["uname"].ToString()))
+        {
+            <div>
+                <a href="/Comments/Edit/@comments.CommentsID">Edit</a>
+                <a href="/Comments/Delete/@comments.CommentsID">Delete </a>
+            </div>
+        }
+    }
+}

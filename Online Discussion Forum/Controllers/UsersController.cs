@@ -17,27 +17,39 @@ namespace WebApplication4.Controllers
         // GET: Users
         public ActionResult Index()
         {
-            return View(db.users.ToList());
+            if(Session["user"] != null)
+            {
+                if(Session["role"].ToString().Equals("admin"))
+                {
+                    return View(db.users.ToList());
+                }
+            }
+            return RedirectToAction("Index", "Fourms");
         }
 
         public ActionResult LoggedIn()
         {
             var fourms = db.fourms.Include(f => f.users);
+            fourms = fourms.OrderByDescending(x => x.datetime);
             return View(fourms.ToList());
         }
 
         public ActionResult Logout()
         {
             Session["user"] = null;
+            Session["LoginMessage"] = null;
             Session["UserID"] = null;
             Session["uname"] = null;
             Session["fourms"] = null;
             Session["FourmsID"] = null;
+            Session["role"] = null;
             var fourms = db.fourms.Include(f => f.users);
+            fourms = fourms.OrderByDescending(x => x.datetime);
             return View(fourms.ToList());
         }
         public ActionResult Login()
         {
+            Session["LoginMessage"] = null;
             return View();
         }
         [HttpPost]
@@ -51,7 +63,9 @@ namespace WebApplication4.Controllers
             {
                 Session["uname"] = userh.uname;
                 Session["user"] = userh;
+                Session["LoginMessage"] = null;
                 Session["UsersID"] = userh.UsersID;
+                Session["role"] = userh.role;
                 return RedirectToAction("LoggedIn");
             }
 
@@ -88,14 +102,44 @@ namespace WebApplication4.Controllers
         {
             if (ModelState.IsValid)
             {
+                bool x = db.users.Any(y => y.uname == users.uname);
+                if (x == true)
+                {
+                    Session["LoginMessage"] = "User Already Exist!! try different username!";
+                    return View(users);
+                }
                 db.users.Add(users);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                Session["LoginMessage"] = null;
+                return RedirectToAction("Index","Fourms");
             }
 
             return View(users);
         }
 
+        public ActionResult ViewProfile(string uname)
+        {
+            if(string.IsNullOrEmpty(uname))
+            {
+                uname = Session["uname"].ToString();
+            }
+            var users = db.users.Where(y => y.uname.Equals(uname)).FirstOrDefault();
+            if (users == null)
+            {
+                ViewData["puser"] = "User Deleted";
+            }
+            else
+            {
+                ViewData["puser"] = users.name;
+            }
+            var fourms = db.fourms.Include(f => f.users);
+            var pfourms = fourms.Where(f => f.users.uname.Equals(uname));
+            ViewData["pfourms"] = pfourms.ToList();
+            var comments = db.comments.Include(f => f.fourms);
+            var pcomments = comments.Where(f => f.uname.Equals(uname));
+            ViewData["pcomments"] = pcomments.ToList();
+            return View();
+        }
         // GET: Users/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -122,7 +166,9 @@ namespace WebApplication4.Controllers
             {
                 db.Entry(users).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                var fourms = db.fourms.Include(f => f.users);
+                fourms = fourms.OrderByDescending(x => x.datetime);
+                return View(fourms.ToList());
             }
             return View(users);
         }
@@ -149,8 +195,16 @@ namespace WebApplication4.Controllers
         {
             Users users = db.users.Find(id);
             db.users.Remove(users);
+            Session["user"] = null;
+            Session["LoginMessage"] = null;
+            Session["UserID"] = null;
+            Session["uname"] = null;
+            Session["fourms"] = null;
+            Session["FourmsID"] = null;
+            Session["role"] = null;
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            return RedirectToAction("Index", "Fourms");
         }
 
         protected override void Dispose(bool disposing)

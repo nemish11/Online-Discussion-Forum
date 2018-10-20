@@ -56,6 +56,7 @@ namespace WebApplication4.Controllers
                 comments.commenttext = commenttext;
                 comments.uname = Session["uname"].ToString();
                 comments.FourmsID = int.Parse(Session["FourmsID"].ToString());
+                comments.datetime = DateTime.Now;
                 db.comments.Add(comments);
                 db.SaveChanges();
             }
@@ -97,7 +98,7 @@ namespace WebApplication4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CommentsID,commenttext,uname,FourmsID")] Comments comments)
+        public ActionResult Edit([Bind(Include = "CommentsID,commenttext,uname,FourmsID,datetime")] Comments comments)
         {
             if (ModelState.IsValid)
             {
@@ -134,7 +135,9 @@ namespace WebApplication4.Controllers
             Comments comments = db.comments.Find(id);
             db.comments.Remove(comments);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            int id1 = int.Parse(Session["FourmsID"].ToString());
+            string go1 = "Details/" + id1;
+            return RedirectToAction(go1, "Fourms");
         }
 
         protected override void Dispose(bool disposing)

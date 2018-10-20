@@ -1,17 +1,23 @@
 ﻿@model IEnumerable<WebApplication4.Models.Fourms>
-
 @{
-    ViewBag.Title = "Logout";
+    ViewBag.Title = "LoggedIn";
 }
 
-<h2>Logout</h2>
+<h2>LoggedIn</h2>
+
+<p>
+    @Html.ActionLink("Create New Fourm", "Create", "Fourms")
+</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.users.name)
+            <h3>UserName</h3>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.title)
+            <h3>Forum Title</h3>
+        </th>
+        <th>
+            <h3>Time</h3>
         </th>
         <th></th>
     </tr>
@@ -24,6 +30,9 @@
             </td>
             <td>
                 <a href="/fourms/Details/@item.FourmsID">@item.title </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.datetime)
             </td>
             <td>
                 @if (Session["user"] != null && item.users.uname.Equals(Session["uname"].ToString()))

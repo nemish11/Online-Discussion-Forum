@@ -95,5 +95,5 @@ H:\SEM-5 LAB\WWDN\project\WebApplication4\WebApplication4\bin\Microsoft.CodeDom.
 H:\SEM-5 LAB\WWDN\project\WebApplication4\WebApplication4\obj\Debug\WebApplication4.csproj.CopyComplete
 H:\SEM-5 LAB\WWDN\project\WebApplication4\WebApplication4\obj\Debug\WebApplication4.dll
 H:\SEM-5 LAB\WWDN\project\WebApplication4\WebApplication4\obj\Debug\WebApplication4.pdb
-H:\SEM-5 LAB\WWDN\project\WebApplication4\WebApplication4\obj\Debug\WebApplication4.Migrations.b.resources
+H:\SEM-5 LAB\WWDN\project\WebApplication4\WebApplication4\obj\Debug\WebApplication4.Migrations.a.resources
 H:\SEM-5 LAB\WWDN\project\WebApplication4\WebApplication4\obj\Debug\WebApplication4.csproj.GenerateResource.cache

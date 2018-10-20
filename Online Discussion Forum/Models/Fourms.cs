@@ -15,6 +15,8 @@ namespace WebApplication4.Models
         public string title { get; set; }
         [Required]
         public string text { get; set; }
+        [ScaffoldColumn(false)]
+        public DateTime datetime { get; set; }
         [ForeignKey("users")]
         public int UsersID { get; set;  }
         public virtual Users users { get; set; }

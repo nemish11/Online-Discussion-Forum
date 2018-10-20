@@ -18,6 +18,7 @@ namespace WebApplication4.Controllers
         public ActionResult Index()
         {
             var fourms = db.fourms.Include(f => f.users);
+            fourms = fourms.OrderByDescending(x => x.datetime);
             return View(fourms.ToList());
         }
 
@@ -37,6 +38,7 @@ namespace WebApplication4.Controllers
             var comments = db.comments.Include(f => f.fourms);
             ViewData["comments"] = comments.ToList();
             Session["FourmsID"] = fourms.FourmsID;
+            Session["fdatetime"] = fourms.datetime;
             Session["fourms"] = fourms;
             return View(fourms);
         }
@@ -58,6 +60,7 @@ namespace WebApplication4.Controllers
             if (ModelState.IsValid)
             {
                 fourms.UsersID = int.Parse(Session["UsersID"].ToString());
+                fourms.datetime = DateTime.Now;
                 db.fourms.Add(fourms);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -93,6 +96,7 @@ namespace WebApplication4.Controllers
             if (ModelState.IsValid)
             {
                 fourms.UsersID = int.Parse(Session["UsersID"].ToString());
+                fourms.datetime = DateTime.Now;
                 db.Entry(fourms).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

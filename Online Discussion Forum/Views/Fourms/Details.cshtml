@@ -27,34 +27,44 @@
         </dd>
 
         <dt>
-           <h4>Fourm Text : </h4>
+            <h4>Fourm Text : </h4>
         </dt>
 
         <dd>
             <h4> @Html.DisplayFor(model => model.text) </h4>
         </dd>
+        <dt>
+            <h4>creation time : </h4>
+        </dt>
 
+        <dd>
+            <h4> @Html.DisplayFor(model => model.datetime) </h4>
+        </dd>
     </dl>
     @if (Session["user"] != null && Session["uname"].ToString().Equals(Model.users.uname.ToString()))
     {
         @Html.ActionLink("Edit Fourm Text", "Edit", new { id = Model.FourmsID })
     }
     <hr />
-    <h2>All Comments: </h2><hr/>
+    <h2>All Comments: </h2><hr />
     @if (ViewData["comments"] != null)
     {
         foreach (var comments in ViewData["comments"] as IList<WebApplication4.Models.Comments>)
         {
             if (comments.fourms.FourmsID.Equals(int.Parse(Session["FourmsID"].ToString())))
             {
-                <hr/>
+                <hr />
                 <div>
-                    <h3>user: @comments.uname</h3>
+                    <h3>user: <a href="/users/ViewProfile/@comments.uname">@comments.uname</a> 
+                   
                 </div>
                 <div>
                     <h4>comment: @comments.commenttext</h4>
                 </div>
-                <hr/>
+                <div>
+                    <h3>time : @comments.datetime</h3>
+                </div>
+                <hr />
                 if (Session["uname"] != null && comments.uname.Equals(Session["uname"].ToString()))
                 {
                     <div>
